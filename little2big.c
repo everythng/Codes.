@@ -28,12 +28,11 @@ unsigned int little2big(types *ptype, int n){
 }
         
 int main(int argc, char *argv[]){
-    types *ptype = malloc(sizeof(int)*5); 
+    types *ptype = malloc(sizeof(types)); 
     unsigned int num;
     sscanf(argv[1], "%x", (&num));
     
-    printf("ret big endian: %x\n", little2big(ptype,num));
+    printf("ret: %x\n", little2big(ptype,num));
     free(ptype);
-    
     return 0x0;
 }
