@@ -20,7 +20,7 @@ int myslen(const char *str){
     return j;
 }      
       
-int rsizeb64(size_t len){
+int rsizeb64(int len){
     return((len+2)/3)*4;
 }       
        
@@ -28,9 +28,9 @@ char *encode2base64(char *src, aux *p){
     
     	  if(!src) return NULL;      
     	
-        p->pad = 0x3d;
+          p->pad = 0x3d;
     	  p->len = myslen(src);
-        p->aux = malloc(rsizeb64(p->len)+1);  	
+          p->aux = malloc(rsizeb64(p->len)+1);  	
     	
     	  int i=0, j=0, pbyte=0;	   	   	   
        
@@ -49,7 +49,7 @@ char *encode2base64(char *src, aux *p){
         
         (pbyte ? 
          p->aux[i-1] = p->pad : 0);
-        (pbyte==1 ? 
+        (pbyte == 1 ? 
          p->aux[i-2] = p->pad : 0); 
         
          p->aux[i] = 0;       
@@ -58,7 +58,7 @@ char *encode2base64(char *src, aux *p){
 
 int main(int argc, char **argv){
     aux *ptr = malloc(sizeof(aux));
-    char *ret = encode2base64(argv[1], ptr);
+   char *ret = encode2base64(argv[1], ptr);
     
     printf("%-5s\n", ret);
     
