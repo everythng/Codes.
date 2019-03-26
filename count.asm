@@ -6,8 +6,7 @@
 
 section .rodata
         n db 0xa
-        
-        
+                
 %macro write_nl 0
        mov eax, 4
        mov ebx, 1
