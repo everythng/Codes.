@@ -7,7 +7,7 @@ char *xor_encrypt(char *msg, char *key){
      char *ptr = malloc(len+1);
      
      while(j<(len)){
-          ptr[j++] = (*msg++)^key[j%len];
+          ptr[j++] = (*msg++)^(key[j%len]);
      }         
      
      return ptr;
