@@ -2,37 +2,43 @@
 #include <stdlib.h>
 
 typedef struct{
-        int num;
-        int onebyte;
-        int twbyte;
-        int thrbyte;
-        int fourbyte;
-}types;
+        size_t getvalue;
+        size_t byte1;
+        size_t byte2;
+        size_t byte3;
+        size_t byte4;
+}bytes;
 
-enum {bitmask = 0xff};
+enum {bitmask = 0xFF};
 
-unsigned int little2big(types *ptype, int n){
-    ptype->num = n;
+unsigned int little2big(bytes *pbytes, size_t value){
     
-    ptype->onebyte  = (ptype->num&bitmask);  
-    ptype->twbyte   = (ptype->num&(bitmask<<8))>>8;
-    ptype->thrbyte  = (ptype->num&(bitmask<<16))>>16;
-    ptype->fourbyte = (ptype->num&(bitmask<<24))>>24; 
+    pbytes->getvalue = value;    
+    pbytes->byte1 = (pbytes->getvalue&(bitmask));  
+    pbytes->byte2 = (pbytes->getvalue&(bitmask << 8))  >> 8;
+    pbytes->byte3 = (pbytes->getvalue&(bitmask << 16)) >> 16;
+    pbytes->byte4 = (pbytes->getvalue&(bitmask << 24)) >> 24; 
    
     return (
-           (ptype->fourbyte)  | \
-           (ptype->thrbyte<<8)| \
-           (ptype->twbyte<<16)| \
-           (ptype->onebyte<<24) \
+           (pbytes->byte4)       | \
+           (pbytes->byte3 << 8)  | \
+           (pbytes->byte2 << 16) | \
+           (pbytes->byte1 << 24)   \
            );
 }
         
 int main(int argc, char *argv[]){
-    types *ptype = malloc(sizeof(types)); 
-    unsigned int num;
-    sscanf(argv[1], "%x", (&num));
+    bytes *pbytes = malloc(sizeof(bytes)); 
     
-    printf("ret: %x\n", little2big(ptype,num));
-    free(ptype);
+    if(argc != 2){
+       printf("%s [hex value].\n", argv[0]);
+       exit(-1);      
+    }
+    
+    unsigned int value;
+    sscanf(argv[1], "%x", (&value));
+    
+    printf("ret: %x\n", little2big(pbytes, value));
+    free(pbytes);   
     return 0x0;
 }
